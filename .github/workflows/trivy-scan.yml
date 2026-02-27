@@ -1,0 +1,39 @@
+name: "Trivy Vulnerability Scan"
+
+on:
+  workflow_call:
+    inputs:
+      image-ref:
+        description: "The Docker image reference to scan (e.g., ghcr.io/org/app:tag)"
+        required: true
+        type: string
+      severity:
+        description: "Severity levels to fail on (UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL)"
+        required: false
+        type: string
+        default: "CRITICAL"
+      ignore-unfixed:
+        description: "Whether to ignore vulnerabilities without a fix (true/false)"
+        required: false
+        type: boolean
+        default: true
+
+jobs:
+  trivy-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run Trivy scan
+        uses: aquasecurity/trivy-action@v0.33.1
+        with:
+          scan-type: 'image'
+          image-ref: ${{ inputs.image-ref }}
+          severity: ${{ inputs.severity }}
+          ignore-unfixed: ${{ inputs.ignore-unfixed }}
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: 'trivy-results.sarif'
