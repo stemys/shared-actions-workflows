@@ -61,22 +61,18 @@ runs:
         MODERATE=$(jq '[.advisories[] | select(.severity=="moderate")] | length' yarn-audit-results.json)
         LOW=$(jq '[.advisories[] | select(.severity=="low")] | length' yarn-audit-results.json)
         TOTAL=$((CRITICAL + HIGH + MODERATE + LOW))
-        SUMMARY=$(cat <<EOF
-Yarn Audit Result
 
-- **critical**: $CRITICAL
+        echo "audit-result<<EOF" >> $GITHUB_OUTPUT
+        echo "Yarn Audit Result
+- critical: $CRITICAL
 - high: $HIGH
 - moderate: $MODERATE
 - low: $LOW
 - Total CVEs: $TOTAL
 
-The full results are available as an artifact: [Download audit report](https://github.com/${GITHUB_REPOSITORY}/suites/${GITHUB_RUN_ID}/artifacts)
-EOF
-)                                                 
-        echo "audit-result<<EOF" >> $GITHUB_OUTPUT
-        echo "$SUMMARY" >> $GITHUB_OUTPUT
+The full results are available as an artifact: [Download audit report](https://github.com/${GITHUB_REPOSITORY}/suites/${GITHUB_RUN_ID}/artifacts)" >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
-
+        
     - name: Find Comment
       if: |
         github.event_name == 'pull_request' &&
