@@ -1,4 +1,5 @@
 name: "Trivy Vulnerability Scan"
+author: stemys SA
 description: "Run Trivy scan and upload results"
 
 inputs:
