@@ -34,7 +34,7 @@ runs:
       with:
         name: trivy-scan-results
         path: trivy-results.json
-        retention-days: 7
+        retention-days: 5
 
     - name: Fail build if vulnerabilities found
       uses: aquasecurity/trivy-action@0.34.1
