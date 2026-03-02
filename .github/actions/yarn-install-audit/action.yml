@@ -1,4 +1,4 @@
-name: yarn-audit
+name: "Yarn install and audit"
 author: stemys SA
 description: "Install Node.js, run yarn install with frozen lockfile and then run yarn audit"
 inputs:
