@@ -13,6 +13,9 @@ inputs:
     description: "If true, skip the yarn audit"
     required: false
     default: "false"
+  token:
+    description: Personal access token (PAT) used to create comment on Pull Request (PR)
+    required: false
 
 runs:
   using: "composite"
