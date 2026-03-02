@@ -50,8 +50,9 @@ runs:
       id: output-audit-result
       shell: bash
       run: |
+        AUDIT_OUTPUT=$(yarn audit --level ${{ inputs.severity }} || true)
         echo "audit-result<<EOF" >> $GITHUB_OUTPUT
-        yarn audit --level ${{ inputs.severity }} || true >> $GITHUB_OUTPUT
+        echo "$AUDIT_OUTPUT" >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
 
     - name: Find Comment
