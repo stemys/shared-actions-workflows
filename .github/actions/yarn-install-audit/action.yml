@@ -64,7 +64,7 @@ runs:
         issue-number: ${{ github.event.pull_request.number }}
         comment-author: 'github-actions[bot]'
         body-includes: Yarn Audit
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ inputs.token }}
 
     - name: Create or update comment
       if: |
@@ -78,7 +78,7 @@ runs:
           Yarn Audit
           ${{ steps.output-audit-result.outputs.audit-result }}
         edit-mode: replace
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ inputs.token }}
 
     - name: Fail if critical dependencies found
       if: inputs.skip-audit == 'false'
