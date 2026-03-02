@@ -75,8 +75,14 @@ runs:
         comment-id: ${{ steps.fc.outputs.comment-id }}
         issue-number: ${{ github.event.pull_request.number }}
         body: |
-          ## 📦️ Yarn Audit – ${{ inputs.severity }} threshold
+          ## 🛡️ Yarn Audit – ${{ inputs.severity }} threshold
+          
           ${{ steps.output-audit-result.outputs.audit-result }}
+          
+          ---
+          
+          📦 **Full report available here:**
+          👉 https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}#artifacts
         edit-mode: replace
         token: ${{ inputs.token }}
 
