@@ -29,9 +29,9 @@ runs:
 
     - name: Run yarn audit
       if: inputs.skip-audit == 'false'
-      uses: borales/actions-yarn@v4
-      with:
-        cmd: audit > yarn-audit-results.txt || true
+      shell: bash
+      run: |
+        yarn audit > yarn-audit-results.txt || true
 
     - name: Upload Yarn audit results as artifact
       uses: actions/upload-artifact@v4
