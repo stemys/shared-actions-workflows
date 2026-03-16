@@ -90,13 +90,20 @@ runs:
       if: inputs.skip-audit == 'false'
       shell: bash
       run: |
+        set +e
         yarn audit --groups dependencies --level critical
         AUDIT_EXIT_CODE=$?
-
+        set -e
+        
+        case $AUDIT_EXIT_CODE in
+          0) echo "✅ No vulnerabilities detected." ;;
+          2) echo "⚠️ Low vulnerabilities detected." ;;
+          4) echo "⚠️ Moderate vulnerabilities detected." ;;
+          8) echo "⚠️ High vulnerabilities detected." ;;
+          16) echo "❌ Critical vulnerabilities detected." ;;
+          *) echo "⚠️ Unexpected exit code: $AUDIT_EXIT_CODE" ;;
+        esac
+        
         if [[ $AUDIT_EXIT_CODE -ge 16 ]]; then
-          echo "❌ Critical vulnerabilities found in dependencies."
           exit 1
-        else
-          echo "✅ No critical vulnerabilities found."
-          exit 0
         fi
