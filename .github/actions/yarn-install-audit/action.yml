@@ -88,6 +88,15 @@ runs:
 
     - name: Fail if critical dependencies found
       if: inputs.skip-audit == 'false'
-      uses: borales/actions-yarn@v4
-      with:
-        cmd: audit --groups dependencies --level ${{ inputs.severity }}
+      shell: bash
+      run: |
+        yarn audit --groups dependencies --level critical
+        AUDIT_EXIT_CODE=$?
+
+        if [[ $AUDIT_EXIT_CODE -ge 16 ]]; then
+          echo "❌ Critical vulnerabilities found in dependencies."
+          exit 1
+        else
+          echo "✅ No critical vulnerabilities found."
+          exit 0
+        fi
